@@ -41,6 +41,7 @@ case $eleccion in
 		departamento=$(echo $line | cut -d ',' -f5)
 
 		sudo useradd -s /bin/bash $cuenta
+		mkdir /home/$cuenta
 		sudo usermod -p $password -c $nombre -d /home/$cuenta -g $departamento
 		tail -1 /etc/passwd
 
