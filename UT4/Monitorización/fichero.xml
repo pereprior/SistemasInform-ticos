@@ -1089,22 +1089,26 @@
 			<QueryName condition="is">ocsp.int-x3.letsencrypt.org</QueryName>
 		</DnsQuery>
 	</RuleGroup>
+		
+	<!--SYSMON EVENT ID 23 : FILE DELETE [FileDelete]-->
+	<Sysmon schemaversion="4.22">
+  		<EventFiltering>
+   			<Delete onmatch="include">
+      				<TargetFilename condition="contains"> </TargetFilename>
+  			</Delete>
+		</EventFiltering>
+	</Sysmon>
 
 	<!--SYSMON EVENT ID 26 : FileDeleteDetected-->
-	<!-- https://learn.microsoft.com/en-us/answers/questions/581099/sysmon-can-i-logging-deleted-all-file-through-sysm.html -->  
-	<RuleGroup name="Evt_26_inc" groupRelation="or">  
-		<FileDeleteDetected onmatch="include">  
-			<TargetFilename condition="contains">\</TargetFilename>  
-		</FileDeleteDetected>  
-	</RuleGroup>  
-  
-	<!-- https://github.com/olafhartong/sysmon-modular/blob/master/23_file_delete/exclude_google_chrome.xml -->  
-	<RuleGroup name="" groupRelation="or">  
-		<FileDelete onmatch="exclude">  
-			<Image condition="contains all">\appdata\local\google\chrome\user data\swreporter\;software_reporter_tool.exe</Image>  
-			<Image condition="is">C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</Image>  
-		</FileDelete>  
-	</RuleGroup> 
+	<sysmon schemaversion="4.30">
+  		<eventfiltering>
+    			<deletions>
+      				<filedeletedetect onmatch="include">
+        				<targetfilename condition="contains">C:\Windows\Temp\*</targetfilename>
+      				</filedeletedetect>
+    			</deletions>
+  		</eventfiltering>
+	</sysmon> 
 
 	<!--SYSMON EVENT ID 255 : ERROR-->
 		<!--"This event is generated when an error occurred within Sysmon. They can happen if the system is under heavy load
